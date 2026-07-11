@@ -13,7 +13,7 @@ Deploy Netflix Clone on Cloud using Jenkins - DevSecOps Project!
 - Clone your application's code repository onto the EC2 instance:
     
     ```bash
-    git clone add your repo-link
+    git clone https://github.com/dipakkokate/netflix-project4.git
     ```
     
 
