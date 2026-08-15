@@ -18,8 +18,9 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    corepack enable || true
-                    yarn install --frozen-lockfile
+                    yarn cache clean
+                   yarn install --frozen-lockfile
+
                 '''
             }
         }
