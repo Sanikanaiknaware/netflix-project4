@@ -44,11 +44,19 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                    docker build \
-                      -t $DOCKER_IMAGE:$BUILD_NUMBER \
-                      -t $DOCKER_IMAGE:latest .
-                '''
+                withCredentials([
+                    string(
+                        credentialsId: 'tmdb-api-key',
+                        variable: 'TMDB_API_KEY'
+                    )
+                ]) {
+                    sh '''
+                        docker build \
+                          --build-arg TMDB_V3_API_KEY="$TMDB_API_KEY" \
+                          -t $DOCKER_IMAGE:$BUILD_NUMBER \
+                          -t $DOCKER_IMAGE:latest .
+                    '''
+                }
             }
         }
 
@@ -79,7 +87,8 @@ pipeline {
                     kubectl set image deployment/netflix-app \
                       netflix-app=$DOCKER_IMAGE:$BUILD_NUMBER
 
-                    kubectl rollout status deployment/netflix-app
+                    kubectl rollout status deployment/netflix-app \
+                      --timeout=5m
                 '''
             }
         }
@@ -95,7 +104,7 @@ pipeline {
         }
 
         failure {
-            echo 'Pipeline failed. Check the Jenkins console output.'
+            echo 'Pipeline failed. Check the Jenkins Console Output.'
         }
     }
 }
