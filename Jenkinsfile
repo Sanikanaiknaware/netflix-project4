@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "sanikanaiknaware/netflix-app"
         AWS_REGION = "ap-south-1"
-        EKS_CLUSTER = "netflix-cluster"
+        EKS_CLUSTER = "demo"
     }
 
     stages {
